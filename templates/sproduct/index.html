@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Silver King{% endblock page_title %}
+
+{% block opc_navbar %}
+  <li><a href="{% url "core:home" %}">Home</a></li>
+  <li><a class="active" href="{% url "core:shop" %}">Shop</a></li>
+  <li><a href="{% url "core:blog" %}">Blog</a></li>
+  <li><a href="{% url "core:about" %}">About</a></li>
+  <li><a href="{% url "core:contact" %}">Contact</a></li>
+  <li id="lg-bag"><span>{{ request.quantidade_itens_carrinho }}</span><a href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a></li>
+  <li id="lg-user"><a href="{% url "userauths:signin" %}"><i class="fa-solid fa-user"></i></a></li>
+  <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+{% endblock opc_navbar %}
+
+{% block content %}
+
+<section id="prodetails" class="section-p1">
+  <div class="single-pro-image">
+    <img src="../media/{{ product.image }}" width="100%" id="MainImg" alt="">
+
+    <div class="small-img-group">
+      <div class="small-img-col">
+        <img src="../media/{{ product.image }}" width="100%" class="small-img" alt="">
+      </div>
+      {% for imgs in img_product %}
+        <div class="small-img-col">
+          <img src="../media/{{ imgs.images }}" width="100%" class="small-img" alt="">
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="single-pro-details">
+    <h6>{{ product.category }}</h6>
+    <h4>{{ product.title }}</h4>
+    <h2>R${{ product.price }}</h2>
+    <select>
+      <option>Select Size</option>
+      <option>P</option>
+      <option>M</option>
+      <option>G</option>
+    </select>
+    <input type="number" value="1">
+    <button class="normal">Add To Card</button>
+    <h4>Detalhes</h4>
+    <span>{{ product.description }}</span>
+  </div>
+</section>
+
+<section id="product-1"  class="section-p1">
+
+  <h2>Features Products</h2>
+  <p>Modern Design. New Collection.</p>
+
+  {% for product in feat_list %}
+    {% include "base-product.html" %}
+  {% endfor %}
+  
+</section> 
+
+{% endblock content %}
+
+{% block extra_scripts %}
+  <script>
+    var MainImg = document.getElementById("MainImg");
+    var smallimg = document.getElementsByClassName("small-img");
+
+    smallimg[0].onclick = function (){
+      MainImg.src = smallimg[0].src;
+    }
+    smallimg[1].onclick = function (){
+      MainImg.src = smallimg[1].src;
+    }
+    smallimg[2].onclick = function (){
+      MainImg.src = smallimg[2].src;
+    }
+    smallimg[3].onclick = function (){
+      MainImg.src = smallimg[3].src;
+    }
+  </script>
+{% endblock extra_scripts %}

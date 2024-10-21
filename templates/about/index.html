@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Silver King{% endblock page_title %}
+
+{% block opc_navbar %}
+  <li><a href="{% url "core:home" %}">Home</a></li>
+  <li><a href="{% url "core:shop" %}">Shop</a></li>
+  <li><a href="{% url "core:blog" %}">Blog</a></li>
+  <li><a class="active" href="{% url "core:about" %}">About</a></li>
+  <li><a href="{% url "core:contact" %}">Contact</a></li>
+  <li id="lg-bag"><span>{{ request.quantidade_itens_carrinho }}</span><a href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a></li>
+  <li id="lg-user"><a href="{% url "userauths:signin" %}"><i class="fa-solid fa-user"></i></a></li>
+  <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+{% endblock opc_navbar %}
+
+{% block content %}
+
+  <section id="page-header" class="about-header">
+    <h2>#KnowUs</h2>
+    <p>Um pouco sobre nos!</p>
+  </section>
+
+  <section id="about-head" class="section-p1">
+    <img src="{% static 'home/img/about/a1.jpg' %}" alt="">
+    <div>
+      <h2>Who we are?</h2>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt ipsa ut, sed cumque enim recusandae. Deleniti assumenda alias qui amet repellat! Aut quam ipsa sunt, architecto esse harum error distinctio.</p>
+
+      <abbr title="">create stunning images with as much or as litlle control as you like thanks to a choice of basic and creative modes.</abbr>
+
+      <br><br>
+
+      <marquee bgcolor="#ccc" loop="-1" scrollamount="5" width="100%">create stunning images with as much or as litlle control as you like thanks to a choice of basic and creative modes.</marquee>
+    </div>
+  </section>
+
+  <section id="feature" class="section-p1">
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f1.png' %}" alt="">
+      <h6>Frete Grátis</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f2.png' %}" alt="">
+      <h6>Pedido Online</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f3.png' %}" alt="">
+      <h6>Economizar</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f4.png' %}" alt="">
+      <h6>Promoções</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f5.png' %}" alt="">
+      <h6>Vendedores</h6>
+    </div>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f6.png' %}" alt="">
+      <h6>Suporte 24/7</h6>
+    </div>
+  </section>
+
+{% endblock content %}

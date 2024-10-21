@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Silver King{% endblock page_title %}
+
+{% block opc_navbar %}
+  <li><a href="{% url "core:home" %}">Home</a></li>
+  <li><a href="{% url "core:shop" %}">Shop</a></li>
+  <li><a class="active" href="{% url "core:blog" %}">Blog</a></li>
+  <li><a href="{% url "core:about" %}">About</a></li>
+  <li><a href="{% url "core:contact" %}">Contact</a></li>
+  <li id="lg-bag"><span>{{ request.quantidade_itens_carrinho }}</span><a href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a></li>
+  <li id="lg-user"><a href="{% url "userauths:signin" %}"><i class="fa-solid fa-user"></i></a></li>
+  <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+{% endblock opc_navbar %}
+
+{% block content %}
+
+  <section id="page-header" class="blog-header">
+    <h2>#Readmore</h2>
+    <p>Read all case studies about out products!</p>
+  </section>
+
+  <section id="blog">
+    {% for post in blog_list %}
+      <div class="blog-box">
+          <div class="blog-img">
+              <img src="{{ post.image.url }}" alt="">
+          </div>
+          <div class="blog-details">
+              <h4>{{ post.title }}</h4>
+              <p>{{ post.summary | safe }}</p>
+              <a href="{% url "core:post" pk=post.pk %}">CONTINUE LENDO</a>
+          </div>
+          <h1>{{ post.date }}</h1>
+      </div>
+    {% endfor %}
+  </section>
+
+  <section id="pagination" class="section-p1">
+    {% if page_obj.has_previous %}
+      <a href="?page={{page_obj.previous_page_number}}"><i class="fa-solid fa-arrow-left"></i></a>
+    {% endif %}
+
+    <a href="">{{ page_obj.number }}</a>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{page_obj.next_page_number}}"><i class="fa-solid fa-arrow-right"></i></a>
+    {% endif %}
+  </section>
+  
+{% endblock content %}

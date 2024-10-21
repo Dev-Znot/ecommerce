@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Silver King{% endblock page_title %}
+
+{% block opc_navbar %}
+  <li><a href="{% url "core:home" %}">Home</a></li>
+  <li><a href="{% url "core:shop" %}">Shop</a></li>
+  <li><a href="{% url "core:blog" %}">Blog</a></li>
+  <li><a href="{% url "core:about" %}">About</a></li>
+  <li><a href="{% url "core:contact" %}">Contact</a></li>
+  <li id="lg-bag"><span>{{ request.quantidade_itens_carrinho }}</span><a class="active" href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a></li>
+  <li id="lg-user"><a href="{% url "userauths:signin" %}"><i class="fa-solid fa-user"></i></a></li>
+  <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+{% endblock opc_navbar %}
+
+{% block content %}
+
+  <section id="page-header" class="about-header">
+    <h2>#Carrinho</h2>
+    <p>Todos os itens que você escolheu!</p>
+  </section>
+  
+  <section id="cart" class="section-p1">
+    {% if prod_cart %}
+      <table width="100%">
+        <thead>
+          <tr>
+            <td>Remover</td>
+            <td>Imagem</td>
+            <td>Produto</td>
+            <td>Preço</td>
+            <td>Quantidade</td>
+            <td>Subtotal</td>
+          </tr>
+        </thead>
+        <tbody>
+            {% for p in prod_cart %}
+              <tr>
+                <td><button class="deleteButton normal" data-pk="{{ p.pk }}"><i class="fa-regular fa-circle-xmark"></i></button></td>
+                <td><img src="{{ p.image.url }}" alt=""></td>
+                <td>{{ p.title }}</td>
+                <td>R${{ p.price }}</td>
+                <td><input type="number" class="quantidade" value="1" data-preco="{{ p.price }}"></td>
+                <td class="subtotal">R$ {{ p.price }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+    {% else %}
+      <h2>Não há itens no carrinho visite nossa <a href="{% url "core:shop" %}">loja</a>.</h2>
+    {% endif %}
+  </section>
+
+  {% if prod_cart %}
+    <section id="cart-add" class="section-p1">
+      <div id="coupon">
+        <h3>Apply coupon</h3>
+        <div>
+          <input type="text" placeholder="Entre com seu cupom">
+          <button class="normal">Apply</button>
+        </div>
+      </div>
+
+      <div id="subtotal">
+        <h3>Carrinho total</h3>
+        <table>
+          <tr>
+            <td>Cart-Subtotal</td>
+            <td id="carttotal"></td>
+          </tr>
+          <tr>
+            <td>Frete</td>
+            {% if freight %}
+              <td id="freight">R$ {{ freight }}</td>
+            {% else %}
+              <td>Grátis</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td><Strong>Total</Strong></td>
+            <td><strong id="total"></strong></td>
+          </tr>
+        </table>
+        <button class="normal">Proceed To Checkout</button>
+      </div>
+    </section>
+  {% endif %}
+  
+{% endblock content %}
+
+{% block extra_scripts %}
+  <script>
+
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+
+    $(document).ready(function() {
+      $('.deleteButton').click(function() {
+        var pk = $(this).data('pk');
+        var csrftoken = getCookie('csrftoken'); 
+        $.ajax({
+          url: '/cart/',  // Inclui a URL
+          type: 'DELETE',
+          data:JSON.stringify({pk:pk}), // Pro corpo
+          contentType:'aplication/json',
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken); // Define o cabeçalho CSRF
+          },
+          success: function(result) {
+            console.log('Objeto deletado com sucesso');
+            // Aqui você pode atualizar a página ou fazer outra ação após a exclusão
+          },
+          error: function(xhr, status, error) {
+            location.reload();
+            console.error('Erro ao deletar objeto:', error);
+          }
+        });
+      });
+    });    
+
+
+    // Seleciona todos os elementos com a classe "quantidade"
+    const quantidades = document.querySelectorAll('.quantidade');
+
+    // Adiciona um evento de input a cada elemento
+    quantidades.forEach(input => {
+      input.addEventListener('input', () => {
+        let quantidade = parseInt(input.value); // Obtém a quantidade inserida pelo usuário
+        if (quantidade <= 0 || isNaN(quantidade)) { // Verifica se a quantidade é menor ou igual a zero ou se não é um número
+          quantidade = 1; // Define a quantidade como 1 se for menor ou igual a zero ou não for um número
+          input.value = 1; // Atualiza o valor do campo de entrada para 1
+        }
+        const preco = parseFloat(input.dataset.preco); // Obtém o preço do produto
+        const subtotal = preco * quantidade; // Calcula o subtotal
+
+        // Seleciona o elemento irmão da célula de entrada e atualiza seu texto com o subtotal formatado
+        input.parentElement.nextElementSibling.textContent = `R$ ${subtotal.toFixed(2)}`;
+      });
+    });
+
+    // Função para calcular o total dos subtotais
+    function calcularTotal() {
+      var subtotais = document.querySelectorAll('.subtotal'); // Seleciona todos os elementos com a classe 'subtotal'
+      var total = 0;
+
+      // Percorre todos os subtotais e os adiciona ao total
+      subtotais.forEach(function(subtotal) {
+        total += parseFloat(subtotal.textContent.replace('R$', '')); // Converte o conteúdo do subtotal para float e adiciona ao total
+      });
+
+      return total.toFixed(2);
+    }
+
+    // Função para atualizar o total na interface
+    function atualizarTotal() {
+      var total = calcularTotal();
+      document.getElementById('carttotal').textContent = 'R$ ' + total; // Atualiza o conteúdo do elemento 'total' com o valor total
+    }
+
+    // Chama a função para calcular o total e atualizar na interface
+    atualizarTotal();
+
+    // Observa mudanças nos elementos de subtotal
+    var observer = new MutationObserver(function(mutationsList) {
+      for(var mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          atualizarTotal(); // Atualiza o total quando houver mudanças nos subtotais
+        }
+      }
+    });
+
+    var targetNode = document.querySelector('body'); // Define o nó alvo para observação (neste caso, o corpo da página)
+    var config = { childList: true, subtree: true }; // Configuração do observador para observar alterações nos nós filhos e subárvore
+    observer.observe(targetNode, config);
+
+
+    // Função para calcular e exibir o total
+    function calcularEAtualizarTotal() {
+      var subtotaltext = document.getElementById('carttotal').textContent;
+      var freighttext = document.getElementById('freight').textContent;
+
+      var subtotal = parseFloat(subtotaltext.replace('R$ ', ''));
+      var freight = parseFloat(freighttext.replace('R$ ', ''));
+
+      var total = subtotal + freight;
+      document.getElementById('total').textContent = 'R$ ' + total.toFixed(2);
+
+    }
+
+    // Chama a função inicialmente para calcular e exibir o total
+    calcularEAtualizarTotal();
+
+    // Observa mudanças no campo cart-total
+    var observer = new MutationObserver(function(mutationsList) {
+      for(var mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          calcularEAtualizarTotal(); // Chama a função de cálculo e atualização do total quando houver mudanças no campo cart-total
+        }
+      }
+    });
+
+    var targetNode = document.getElementById('carttotal'); // Define o nó alvo para observação (campo cart-total)
+    var config = { childList: true, subtree: true }; // Configuração do observador para observar alterações nos nós filhos e subárvore
+    observer.observe(targetNode, config);
+
+  </script>
+{% endblock extra_scripts %}

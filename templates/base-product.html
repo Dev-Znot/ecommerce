@@ -1,0 +1,18 @@
+<div class="pro">
+  <img src="/media/{{ product.image }}" alt="" onclick="window.location.href='{% url "core:product" pk=product.pk %}'">
+  <div class="des">
+    <span>{{ product.category }}</span>
+    <h5>{{ product.title }}</h5>
+    <div class="star">
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+      <i class="fas fa-star"></i>
+    </div>
+    <h4>R$ {{ product.price }}</h4>            
+    {% if product.old_price %}
+      <h4><s>R$ {{ product.old_price }}</s></h4>
+    {% endif %} 
+  </div>
+  <button class="cartSend" data-pk="{{ product.pk }}"><i class="fa-solid fa-cart-shopping"></i></button>
+</div>

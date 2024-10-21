@@ -1,0 +1,29 @@
+.error-message {
+    color: #ff0000; /* Cor do texto vermelho */
+    font-size: 14px; /* Tamanho da fonte */
+    margin-top: 5px; /* Espaço superior */
+}
+.xxsmall { 
+    font-size:xx-small; 
+} 
+.xsmall { 
+    font-size:x-small; 
+} 
+.small { 
+    font-size:small; 
+} 
+.medium { 
+    font-size:medium; 
+} 
+.large { 
+    font-size:large; 
+} 
+.xlarge { 
+    font-size:x-large; 
+} 
+.xxlarge { 
+    font-size:xx-large; 
+} 
+
+
+

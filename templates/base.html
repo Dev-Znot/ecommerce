@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block page_title %}{% endblock page_title %}</title>
+    <!--Favicon-->
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <!-- Links -->
+    <!-- Css -->
+    <link rel="stylesheet" href="{% static 'home/css/styles.css' %}"/>
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <!-- Scripts -->
+    <!--JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- Django head -->
+    {% block extra_head %}{% endblock extra_head %}
+</head>
+<body>
+  <section id="header">
+    <a href="{% url "core:home" %}"><img src="{% static 'home/img/logo.png' %}" class="logo" alt=""></a>
+
+    <div>
+      <ul id="navbar">
+        {% block opc_navbar %}
+          <li><a class="active" href="{% url "core:home" %}">Home</a></li>
+          <li><a href="{% url "core:shop" %}">Shop</a></li>
+          <li><a href="{% url "core:blog" %}">Blog</a></li>
+          <li><a href="{% url "core:about" %}">About</a></li>
+          <li><a href="{% url "core:contact" %}">Contact</a></li>
+          <li id="lg-bag"><span>{{ request.quantidade_itens_carrinho }}</span><a href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a></li>
+          <li id="lg-user"><a href="{% url "userauths:signin" %}"><i class="fa-solid fa-user"></i></a></li>
+          <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+        {% endblock opc_navbar %}
+      </ul>
+    </div>
+
+    <div id="mobile">
+      <a href="{% url "core:cart" %}"><i class="fa-solid fa-basket-shopping"></i></a>
+      <i id="bar" class="fa-solid fa-bars"></i>
+    </div>
+  </section>
+
+  {% block content %}{% endblock content %}
+
+  <footer class="section-p1">
+    <div class="col">
+      <img class="logo" src="{% static 'home/img/logo.png' %}" alt="">
+      <h4>Contact</h4>
+      <p><strong>Address:</strong>address</p>
+      <p><strong>Phone:</strong>(+001) 0000-0000</p>
+      <p><strong>Hours:</strong>10:00 - 19:00, Mon - Sat</p>
+      <div class="follow">
+        <h4>Follow us</h4>
+        <div class="icon">
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-pinterest"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h4>About</h4>
+      <a href="{% url "core:about" %}">About Us</a>
+      <a href="#">Delivery Information</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="{% url "core:contact" %}">Contact Us</a>
+    </div>
+
+    <div class="col">
+      <h4>My Account</h4>
+      <a href="{% url "userauths:signin" %}">Sign In</a>
+      <a href="{% url "core:cart" %}">View Cart</a>
+      <a href="#">My Whishlist</a>
+      <a href="#">Track My Order</a>
+      <a href="#">Help</a>
+    </div>
+
+    <div class="col pay">
+      <h4>Payment methods</h4>
+      <p>Secured Payment Gateways</p>
+      <img src="{% static 'home/img/pay/pay.png' %}" alt="">
+    </div>
+
+    <div class="copyright">
+      <p>© 2024, ThZt - Html CSS Ecommerce Template</p>
+    </div>
+    
+  </footer>
+
+  {% block extra_scripts %}{% endblock extra_scripts %}
+  
+  <script src="{% static 'home/js/scripts.js' %}"></script>
+</body>
+</html>

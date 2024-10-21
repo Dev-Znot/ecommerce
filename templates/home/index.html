@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Silver King{% endblock page_title %}
+
+{% block content %}
+
+  <section id="hero">
+    <h4>Trade-in-offer</h4>
+    <h2>Super value deals</h2>
+    <h1>On all products</h1>
+    <p>Save more with coupons & up to 70% off!</p>
+    <a href="{% url "core:shop" %}"><button>Shop Now!</button></a>
+  </section>
+
+  <section id="feature" class="section-p1">
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f1.png' %}" alt="">
+      <h6>Frete Grátis</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f2.png' %}" alt="">
+      <h6>Pedido Online</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f3.png' %}" alt="">
+      <h6>Economizar</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f4.png' %}" alt="">
+      <h6>Promoções</h6>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f5.png' %}" alt="">
+      <h6>Vendedores</h6>
+    </div>
+    </div>
+    <div class="fe-box">
+      <img src="{% static 'home/img/features/f6.png' %}" alt="">
+      <h6>Suporte 24/7</h6>
+    </div>
+  </section>
+
+  <section id="product-1"  class="section-p1">
+    <h2>Features Products</h2>
+    <p>Modern Design. New Collection.</p>
+    <div class="container-product">
+      {% for product in feat_list %}
+        {% include "base-product.html" %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section id="banner" class="section-m1">
+    <h4>Repair Services</h4>
+    <h2>Up to <span>70% Off</span> - All Acessories & Bracelet</h2>
+    <a href="{% url "core:shop" %}"><button class="normal">Explore More</button></a>
+  </section>
+
+  <section id="product-1"  class="section-p1">
+    <h2>New Arrivals</h2>
+    <p>Modern Design. New Collection.</p>
+
+    {% for product in new_list %}
+      {% include "base-product.html" %}
+    {% endfor %}
+  </section>
+
+  <section id="sm-banner" class="section-p1">
+    <div class="banner-box">
+      <h4>crazy deals</h4>
+      <h2>buy 1 get 1 free</h2>
+      <span>The best classic dress is on sale at cara</span>
+      <button class="white">Learn More</button>
+    </div>
+    <div class="banner-box banner-box2">
+      <h4>crazy deals</h4>
+      <h2>buy 1 get 1 free</h2>
+      <span>The best classic dress is on sale at cara</span>
+      <button class="white">Learn More</button>
+    </div>
+  </section>
+
+  <section id="banner3">
+    <div class="banner-box">
+      <h2>TITLE</h2>
+      <h3>Aleatorie text</h3>
+    </div>
+    <div class="banner-box banner-box2">
+      <h2>TITLE</h2>
+      <h3>Aleatorie text</h3>
+    </div>
+    <div class="banner-box banner-box3">
+      <h2>TITLE</h2>
+      <h3>Aleatorie text</h3>
+    </div>
+  </section>
+  
+{% endblock content %}
